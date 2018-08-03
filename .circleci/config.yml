@@ -1,0 +1,23 @@
+# Golang CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-go/ for more details
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: circleci/golang:1.10.3
+
+    working_directory: /go/src/github.com/CIP-NL/pepe
+    steps:
+      - checkout
+
+      # Make sure golangci-lint is vendored by running
+      #   dep ensure -add github.com/golangci/golangci-lint/cmd/golangci-lint
+      # ...and adding this to your Gopkg.toml file.
+      #   required = ["github.com/golangci/golangci-lint/cmd/golangci-lint"]`
+      - run:
+          name: Obtain dependencies
+          command: |
+            curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+            dep ensure -v -vendor-only
